@@ -1,7 +1,7 @@
 require "eventmachine"
 require "evma_httpserver"
 require "twitter"
-require "yajl"
+require "yajl/json_gem"
 
 class Twitit
 
@@ -14,9 +14,20 @@ class Twitit
     )
   end
 
-  def process(content, path)
-    puts path
-    puts content
+  def process(content)
+    payload = JSON.parse(content)
+    name = payload['name']
+    version = payload['version']
+    info = payload['info']
+    url = payload['project_uri']
+    hurl = payload['homepage_uri']
+    limit = 140 - (36 + name.size + version.size)
+    if info.size > limit
+      info = info[0..limit] + ' ...'
+    end
+    msg = "#{name} (#{version}) #{url} #{info} (#{hurl})"
+    p msg
+    @client.update(msg)
   end
 
 end
@@ -31,7 +42,7 @@ class Handler < EM::Connection
   def process_http_request
     response = EM::DelegatedHttpResponse.new(self)
     operation = proc do
-      @twit.process(@http_post_content, @http_path_info)
+      @twit.process(@http_post_content)
       response.status = 200
       response.content = "ok"
     end
