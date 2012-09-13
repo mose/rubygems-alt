@@ -48,6 +48,5 @@ end
 EM.run do
   Signal.trap('INT')  { EM.stop }
   Signal.trap('TERM') { EM.stop }
-  #EM.start_server( "http://rubygems.codegreenit.com", 8080, Handler, @twit )
-  EM.start_server( "localhost", 3111, Handler, @twit )
+  EM.start_server( ENV['WEBHOOK_SERVER'], ENV['WEBHOOK_PORT'], Handler, @twit )
 end
