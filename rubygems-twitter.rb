@@ -53,7 +53,6 @@ class Handler < EM::Connection
       response.content = "ok"
     end
     callback = proc do
-      puts @http_request_method
       response.send_response
     end
     EM.defer(operation, callback)
