@@ -27,13 +27,17 @@ class Twitit
     if payload['homepage_uri'] and payload['homepage_uri'] != ''
       hurl = ' (' + @bitly.shorten(payload['homepage_uri']).short_url + ')'
     end
-    limit = 140 - (12 + name.size + version.size + url.size + hurl.size)
+    limit = 140 - (14 + name.size + version.size + url.size + hurl.size)
     if info.size > limit
       info = info[0..limit] + ' ...'
     end
     msg = "#{name} (#{version}) #{url} #{info}#{hurl}"
     p msg
-    @client.update(msg)
+    begin
+      @client.update(msg)
+    rescue Exception => e
+      puts e
+    end
   end
 
 end
