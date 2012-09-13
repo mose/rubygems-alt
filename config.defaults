@@ -5,3 +5,6 @@ export TWITTER_OAUTH_TOKEN_SECRET=""
 
 export WEBHOOK_SERVER=""
 export WEBHOOK_PORT=""
+
+export BITLY_USER=""
+export BITLY_APIKEY=""

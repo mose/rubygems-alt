@@ -1,6 +1,7 @@
 require "eventmachine"
 require "evma_httpserver"
 require "twitter"
+require "bitly"
 require "yajl/json_gem"
 
 class Twitit
@@ -12,6 +13,8 @@ class Twitit
       :oauth_token => ENV['TWITTER_OAUTH_TOKEN'],
       :oauth_token_secret => ENV['TWITTER_OAUTH_TOKEN_SECRET']
     )
+    Bitly.use_api_version_3
+    @bitly = Bitly.new(ENV['BITLY_USER'], ENV['BITLY_APIKEY'])
   end
 
   def process(content)
@@ -19,13 +22,16 @@ class Twitit
     name = payload['name']
     version = payload['version']
     info = payload['info']
-    url = payload['project_uri']
-    hurl = payload['homepage_uri']
-    limit = 140 - (36 + name.size + version.size)
+    url = @bitly.shorten(payload['project_uri']).short_url
+    hurl = ''
+    if payload['homepage_uri'] and payload['homepage_uri'] != ''
+      hurl = ' (' + @bitly.shorten(payload['homepage_uri']).short_url + ')'
+    end
+    limit = 140 - (12 + name.size + version.size + url.size + hurl.size)
     if info.size > limit
       info = info[0..limit] + ' ...'
     end
-    msg = "#{name} (#{version}) #{url} #{info} (#{hurl})"
+    msg = "#{name} (#{version}) #{url} #{info}#{hurl}"
     p msg
     @client.update(msg)
   end
