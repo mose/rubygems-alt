@@ -8,12 +8,15 @@ It uses the excellent [Twitter](https://github.com/sferik/twitter) gem and and t
 Install
 ----------------
 
-copy the config.defaults to config, change its content
+    git clone https://github.com/mose/rubygems-alt.git
+    cd rubygems-alt
+    cp config.defaults config
+    vi config # and change config params
+    bundle install
 
 Launch
 ----------------
 
-    cd rubygems-alt
     ./rgt.sh
 
 Daemonize
@@ -27,3 +30,8 @@ Check out
 [@rubygems-alt](https://twitter.com/RubyGemsAlt) on twitter
 
 
+Licence
+------------------
+
+MIT licence aplies to this tiny piece of code
+Copyright 2012 Mose
