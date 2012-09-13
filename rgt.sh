@@ -1,4 +1,4 @@
 #!/bin/sh
 
-. ./.config
+. ./config
 /usr/bin/env ruby ./rubygems-twitter.rb
