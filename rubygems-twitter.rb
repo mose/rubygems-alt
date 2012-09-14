@@ -18,7 +18,7 @@ class Twitit
     payload = JSON.parse(content)
     name = payload['name']
     version = payload['version']
-    info = payload['info']
+    info = payload['info'].gsub(/\s+/,' ').gsub(/\A\s*/,'')
     url = payload['project_uri']
     hurl = payload['homepage_uri']
     limit = 140 - (36 + name.size + version.size)
