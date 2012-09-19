@@ -9,12 +9,21 @@ describe Announce do
     TestHelpers::load_env
   end
 
-  describe "just works fine" do
+  describe "starts smoothly" do
 
     it "initialize twitter and bitly handler" do
+      announce = Announce.new
+      announce.instance_variables.must_include :@client
+      announce.instance_variables.must_include :@bitly
+    end
+
+  end
+
+  describe "hamdles the webhook" do
+
+    before do
       @announce = Announce.new
-      @announce.instance_variables.must_include :@client
-      @announce.instance_variables.must_include :@bitly
+      skip
     end
 
   end

@@ -20,3 +20,4 @@ config
 tmp/*.pid
 tmp/last
 logs/*.output
+logs/*.log

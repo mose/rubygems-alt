@@ -17,9 +17,12 @@ class Announce
   end
 
   def process(content)
-    file.open(FILE.join(ROOT_DIR,'tmp','last'), 'w') do |f|
-      f.write content
-    end
+    #File.open(File.join(ROOT_DIR,'tmp','last'), 'w') { |f| f.write content }
+    msg = build_message content
+    update_status msg
+  end
+
+  def build_message(content)
     payload = JSON.parse(content)
     name = payload['name']
     version = payload['version']
@@ -33,8 +36,12 @@ class Announce
     if info.size > limit
       info = info[0..limit] + ' ...'
     end
-    msg = "#{name} (#{version}) #{url} #{info}#{hurl}"
-    p msg
+    "#{name} (#{version}) #{url} #{info}#{hurl}"
+  end
+
+  def update_status(msg)
+    print Time.now.strftime("[%Y-%m-%d %H:%M] ")
+    puts msg
     begin
       @client.update(msg)
     rescue Exception => e
