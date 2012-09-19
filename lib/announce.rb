@@ -1,10 +1,8 @@
-require "eventmachine"
-require "evma_httpserver"
 require "twitter"
 require "bitly"
 require "yajl/json_gem"
 
-class Twitit
+class Announce
 
   def initialize
     @client = Twitter::Client.new(
@@ -15,6 +13,7 @@ class Twitit
     )
     Bitly.use_api_version_3
     @bitly = Bitly.new(ENV['BITLY_USER'], ENV['BITLY_APIKEY'])
+    #hashtagfile = File.join(ROOT_DIR,"hashtags.json")
   end
 
   def process(content)
@@ -42,31 +41,4 @@ class Twitit
 
 end
 
-class Handler < EM::Connection
-  include EM::HttpServer
 
-  def initialize(twit)
-    @twit = twit
-  end
-
-  def process_http_request
-    response = EM::DelegatedHttpResponse.new(self)
-    operation = proc do
-      @twit.process(@http_post_content)
-      response.status = 200
-      response.content = "ok"
-    end
-    callback = proc do
-      response.send_response
-    end
-    EM.defer(operation, callback)
-  end
-
-end
-
-@twit = Twitit.new
-EM.run do
-  Signal.trap('INT')  { EM.stop }
-  Signal.trap('TERM') { EM.stop }
-  EM.start_server( ENV['WEBHOOK_SERVER'], ENV['WEBHOOK_PORT'], Handler, @twit )
-end
