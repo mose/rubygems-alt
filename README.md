@@ -1,4 +1,4 @@
-RubyGems-alt
+rubygems-announce
 =======================
 
 A webhook simple reciever for RubyGems.
@@ -26,10 +26,10 @@ Launch
 
     ./rgt.sh
 
-Daemonize
+Daemonized
 ----------------
 
-    to be done
+The rubygems-announce process will be launched in the background, and you can find its logs in logs/rubygems-announce.output
 
 Check out
 -----------------
@@ -40,5 +40,26 @@ Check out
 Licence
 ------------------
 
-MIT licence aplies to this tiny piece of code
-Copyright 2012 Mose
+(The MIT License)
+
+Copyright (c) Mose, at mose.fr
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
