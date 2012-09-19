@@ -17,3 +17,6 @@ tmp
 _yardoc
 doc/
 config
+tmp/*.pid
+tmp/last
+logs/*.output

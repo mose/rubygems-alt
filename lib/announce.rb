@@ -17,6 +17,9 @@ class Announce
   end
 
   def process(content)
+    file.open(FILE.join(ROOT_DIR,'tmp','last'), 'w') do |f|
+      f.write content
+    end
     payload = JSON.parse(content)
     name = payload['name']
     version = payload['version']

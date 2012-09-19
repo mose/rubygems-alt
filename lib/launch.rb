@@ -8,10 +8,11 @@ require 'lib/announce.rb'
 require 'lib/handler.rb'
 
 Daemons.daemonize(
-  :app_name => 'Rubygems-tweet',
+  :app_name => 'rubygems-announce',
   :dir_mode => :normal,
   :log_dir => File.join(ROOT_DIR,'logs'),
   :log_output => true,
+  :backtrace => true,
   :dir => File.join(ROOT_DIR, 'tmp')
 )
 
