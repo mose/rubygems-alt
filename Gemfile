@@ -6,5 +6,8 @@ gem "twitter"
 gem 'yajl-ruby'
 gem "bitly"
 gem "daemons"
+
+# testing
 gem "minitest"
+gem "rr"
 

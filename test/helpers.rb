@@ -1,3 +1,9 @@
+require 'rr'
+
+class MiniTest::Unit::TestCase
+    include RR::Adapters::MiniTest
+end
+
 module TestHelpers
 
   def self.load_env
