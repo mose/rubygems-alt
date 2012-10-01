@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "twitter"
 require "bitly"
 require "yajl/json_gem"
@@ -24,27 +25,37 @@ class Announce
     Bitly.new(ENV['BITLY_USER'], ENV['BITLY_APIKEY'])
   end
 
-  def process(content)
+  def process(content,headers)
     #File.open(File.join(ROOT_DIR,'tmp','last'), 'w') { |f| f.write content }
-    msg = build_message content
-    update_status msg
+    msg = build_message(content,headers)
+    if msg
+      update_status msg
+    else
+      401
+    end
   end
 
-  def build_message(content)
+  def build_message(content,headers)
     payload = JSON.parse(content)
     name = payload['name']
     version = payload['version']
-    info = payload['info'].gsub(/\s+/,' ').gsub(/\A\s*/,'')
-    url = @bit.shorten(payload['project_uri']).short_url
-    hurl = ''
-    if payload['homepage_uri'] and payload['homepage_uri'] != ''
-      hurl = ' (' + @bit.shorten(payload['homepage_uri']).short_url + ')'
+    authorization = Digest::SHA2.hexdigest(name + version + ENV['WEBHOOK_APIKEY'])
+    if headers['Authorization'] != authorization
+      puts "unauthorized #{headers['Authorization']} != #{authorization}"
+      return false
+    else
+      info = payload['info'].gsub(/\s+/,' ').gsub(/\A\s*/,'')
+      url = @bit.shorten(payload['project_uri']).short_url
+      hurl = ''
+      if payload['homepage_uri'] and payload['homepage_uri'] != ''
+        hurl = ' (' + @bit.shorten(payload['homepage_uri']).short_url + ')'
+      end
+      limit = 140 - (12 + name.size + version.size + url.size + hurl.size)
+      if info.size > limit
+        info = info[0..limit] + ' …'
+      end
+      "#{name} (#{version}) #{url} #{info}#{hurl}"
     end
-    limit = 140 - (14 + name.size + version.size + url.size + hurl.size)
-    if info.size > limit
-      info = info[0..limit] + ' ...'
-    end
-    "#{name} (#{version}) #{url} #{info}#{hurl}"
   end
 
   def update_status(msg)
@@ -52,8 +63,10 @@ class Announce
     puts msg
     begin
       @tw.update(msg)
+      200
     rescue Exception => e
       puts e
+      500
     end
   end
 
