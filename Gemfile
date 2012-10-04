@@ -9,5 +9,4 @@ gem "daemons"
 
 # testing
 gem "minitest"
-gem "rr"
 
