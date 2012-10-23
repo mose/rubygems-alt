@@ -10,4 +10,4 @@ gem "daemons"
 # testing
 gem "minitest"
 gem "rr"
-
+gem 'awesome_print'
