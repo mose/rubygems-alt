@@ -1,3 +1,4 @@
+# encoding: utf-8
 require "twitter"
 require "bitly"
 require "yajl/json_gem"
@@ -7,7 +8,7 @@ class Announce
   def initialize(tw=nil,bit=nil)
     @tw = tw || twitter
     @bit = bit || bitly
-    #hashtagfile = File.join(ROOT_DIR,"hashtags.json")
+    @hashtags = File.read(File.join("./hashtags.json")).split("\n")
   end
 
   def twitter
@@ -24,36 +25,57 @@ class Announce
     Bitly.new(ENV['BITLY_USER'], ENV['BITLY_APIKEY'])
   end
 
-  def process(content)
-    #File.open(File.join(ROOT_DIR,'tmp','last'), 'w') { |f| f.write content }
-    msg = build_message content
-    update_status msg
+  def shorten(link)
+    @bit.shorten(link).short_url
   end
 
-  def build_message(content)
+  def process(content,headers)
+    #File.open(File.join(ROOT_DIR,'tmp','last'), 'w') { |f| f.write content }
+    msg = build_message(content,headers)
+    if msg
+      update_status msg
+    else
+      401
+    end
+  end
+
+  def hashify(content)
+  end
+
+  def build_message(content,headers)
     payload = JSON.parse(content)
     name = payload['name']
     version = payload['version']
-    info = payload['info'].gsub(/\s+/,' ').gsub(/\A\s*/,'')
-    url = @bit.shorten(payload['project_uri']).short_url
-    hurl = ''
-    if payload['homepage_uri'] and payload['homepage_uri'] != ''
-      hurl = ' (' + @bit.shorten(payload['homepage_uri']).short_url + ')'
+    authorization = Digest::SHA2.hexdigest(name + version + ENV['WEBHOOK_APIKEY'])
+    if headers['Authorization'] != authorization
+      #puts "unauthorized #{headers['Authorization']} != #{authorization}"
+      return false
+    else
+      info = payload['info'].gsub(/\s+/,' ').gsub(/\A\s*/,'')
+      url = shorten(payload['project_uri'])
+      hurl = ''
+      if payload['homepage_uri'] and payload['homepage_uri'] != ''
+        hurl = ' (' + shorten(payload['homepage_uri']) + ')'
+      end
+      limit = 140 - (8 + name.size + version.size + url.size + hurl.size)
+      if info.size > limit
+        info = info[0..limit] + ' …'
+      end
+      "#{name} (#{version}) #{url} #{info}#{hurl}"
     end
-    limit = 140 - (14 + name.size + version.size + url.size + hurl.size)
-    if info.size > limit
-      info = info[0..limit] + ' ...'
-    end
-    "#{name} (#{version}) #{url} #{info}#{hurl}"
   end
 
   def update_status(msg)
-    print Time.now.strftime("[%Y-%m-%d %H:%M] ")
-    puts msg
-    begin
-      @tw.update(msg)
-    rescue Exception => e
-      puts e
+    if msg
+      print Time.now.strftime("[%Y-%m-%d %H:%M] ")
+      puts msg
+      begin
+        @tw.update(msg)
+        200
+      rescue Exception => e
+        puts e
+        500
+      end
     end
   end
 

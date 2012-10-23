@@ -11,39 +11,49 @@ describe Announce do
 
   describe "starts smoothly" do
 
-    it "initialize twitter and bitly handler" do
+    it "initialize Annoucne class with proper instance variables" do
       announce = Announce.new
       announce.instance_variables.must_include :@tw
       announce.instance_variables.must_include :@bit
+      announce.instance_variables.must_include :@hashtags
     end
 
   end
 
-  describe "hamdles the webhook" do
+  describe "hamdles a short announce" do
 
     before do
-      stub(Announce).twitter { Twitter.new }
-      stub(Announce).bitly { Bitly.new }
-      stub(Bitly).shorten { Uri.new }
-      @announce = Announce.new
+      @tw = Minitest::Mock.new
+      @bit = Minitest::Mock.new
+      @url = Minitest::Mock.new
+      @bit.expect(:shorten,@url,["http://rubygems.org/gems/capistrano-node-deploy"])
+      @bit.expect(:shorten,@url,["http://github.com/loopj/capistrano-node-deploy"])
+      @url.expect(:short_url,'http://bit.ly/xxxxxx')
+      @url.expect(:short_url,'http://bit.ly/yyyyyy')
+      @announce = Announce.new(@tw,@bit)
+      @headers = {'Authorization' => '3a52d88183e7695d58aa110e0b8c06a18ee98ba050568c6d89648a3a779a4283' }
       @content = File.read(File.expand_path("../samples/webhook",__FILE__))
-      @result = @announce.build_message(@content)
     end
 
-    it "should have proper methods declared" do
-
-    end
-
-    it "gets the name right" do
+    it "read the announce correctly" do
+      @result = @announce.build_message(@content,@headers)
       @result.must_include "capistrano-node-deploy"
-    end
-
-    it "gets the version right" do
       @result.must_include " (1.0.9) "
+      @result.length.must_be  :<=, 140
+      @bit.verify
     end
 
-    it "is less than 140 characters" do
-      @result.length.must_be  :<, 140
+    it "fails to accept invalid authorization key" do
+      @headers = {'Authorization' => '3a52d88183e7695d58aa110e0b8c06a18ee98ba050568c6d89648a3a779a4211' }
+      @result = @announce.build_message(@content,@headers)
+      @announce.build_message(@content,@headers).must_equal false
+    end
+
+    it "reads long announce right" do
+      @content = File.read(File.expand_path("../samples/webhook-long",__FILE__))
+      @result = @announce.build_message(@content,@headers)
+      @result.length.must_equal 140
+      @bit.verify
     end
 
   end
