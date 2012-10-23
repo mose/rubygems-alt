@@ -52,16 +52,20 @@ class Announce
       return false
     else
       info = payload['info'].gsub(/\s+/,' ').gsub(/\A\s*/,'')
-      url = shorten(payload['project_uri'])
-      hurl = ''
-      if payload['homepage_uri'] and payload['homepage_uri'] != ''
-        hurl = ' (' + shorten(payload['homepage_uri']) + ')'
+      if payload['source_code_uri']  != ''
+        link = payload['source_code_uri']
+      elsif payload['homepage_uri'] != ''
+        link = payload['homepage_uri']
+      else
+        link = payload['project_uri']
       end
-      limit = 140 - (8 + name.size + version.size + url.size + hurl.size)
+      url = shorten(link)
+      hurl = ''
+      limit = 140 - (5 + name.size + version.size + url.size)
       if info.size > limit
         info = info[0..limit] + ' …'
       end
-      "#{name} (#{version}) #{url} #{info}#{hurl}"
+      "#{name} #{version} #{url} #{info}"
     end
   end
 

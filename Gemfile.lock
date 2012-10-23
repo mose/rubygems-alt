@@ -29,6 +29,7 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.2)
     rack (1.4.1)
+    rr (1.0.4)
     simple_oauth (0.1.9)
     twitter (3.7.0)
       faraday (~> 0.8)
@@ -46,5 +47,6 @@ DEPENDENCIES
   eventmachine
   eventmachine_httpserver
   minitest
+  rr
   twitter
   yajl-ruby
