@@ -2,13 +2,14 @@
 require "twitter"
 require "bitly"
 require "yajl/json_gem"
+require "awesome_print"
 
 class Announce
 
   def initialize(tw=nil,bit=nil)
     @tw = tw || twitter
     @bit = bit || bitly
-    @hashtags = File.read(File.join("./hashtags.json")).split("\n")
+    #@hashtags = File.read(File.join("./hashtags.json")).split("\n")
   end
 
   def twitter
@@ -52,16 +53,15 @@ class Announce
       return false
     else
       info = payload['info'].gsub(/\s+/,' ').gsub(/\A\s*/,'')
-      if payload['source_code_uri']  != ''
+      if payload['source_code_uri'] and payload['source_code_uri']  != ''
         link = payload['source_code_uri']
-      elsif payload['homepage_uri'] != ''
+      elsif payload['homepage_uri'] and payload['homepage_uri'] != ''
         link = payload['homepage_uri']
       else
         link = payload['project_uri']
       end
       url = shorten(link)
-      hurl = ''
-      limit = 140 - (5 + name.size + version.size + url.size)
+      limit = 140 - (8 + name.size + version.size + url.size)
       if info.size > limit
         info = info[0..limit] + ' …'
       end
