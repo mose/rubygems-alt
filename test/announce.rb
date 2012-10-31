@@ -28,8 +28,8 @@ describe Announce do
       @url = Minitest::Mock.new
       @bit.expect(:shorten,@url,["http://rubygems.org/gems/capistrano-node-deploy"])
       @bit.expect(:shorten,@url,["http://github.com/loopj/capistrano-node-deploy"])
-      @url.expect(:short_url,'http://bit.ly/xxxxxx')
-      @url.expect(:short_url,'http://bit.ly/yyyyyy')
+      @url.expect(:short_url,'http://j.mp/xxxxxx')
+      @url.expect(:short_url,'http://j.mp/yyyyyy')
       @announce = Announce.new(@tw,@bit)
       @headers = {'Authorization' => '3a52d88183e7695d58aa110e0b8c06a18ee98ba050568c6d89648a3a779a4283' }
       @content = File.read(File.expand_path("../samples/webhook",__FILE__))

@@ -9,7 +9,7 @@ class Announce
   def initialize(tw=nil,bit=nil)
     @tw = tw || twitter
     @bit = bit || bitly
-    #@hashtags = File.read(File.join("./hashtags.json")).split("\n")
+    @hashtags = File.read(File.expand_path("../../hashtags.txt",__FILE__)).split("\n")
   end
 
   def twitter
@@ -40,7 +40,23 @@ class Announce
     end
   end
 
-  def hashify(content)
+  def hashify(content, limit)
+    message = ''
+    words = content.split(" ")
+    while words.count > 0
+      word = words.shift
+      if (message.size + word.size + 2) > limit
+        message << ' …'
+        words.clear
+      else
+        if @hashtags.include? word.downcase
+          message << " ##{word}"
+        else
+          message << " #{word}"
+        end
+      end
+    end
+    message
   end
 
   def build_message(content,headers)
@@ -62,10 +78,8 @@ class Announce
       end
       url = shorten(link)
       limit = 140 - (8 + name.size + version.size + url.size)
-      if info.size > limit
-        info = info[0..limit] + ' …'
-      end
-      "#{name} #{version} #{url} #{info}"
+      message = hashify(info,limit)
+      "#{name} #{version} #{url}#{message}"
     end
   end
 
