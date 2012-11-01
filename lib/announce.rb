@@ -49,7 +49,7 @@ class Announce
         message << ' …'
         words.clear
       else
-        if @hashtags.include? word.downcase.gsub(/\.,!/,'')
+        if @hashtags.include? word.downcase.gsub(/\.,/,'')
           message << " ##{word}"
         else
           message << " #{word}"
