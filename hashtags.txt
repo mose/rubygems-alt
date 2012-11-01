@@ -10,6 +10,7 @@ bootstrap
 capistrano
 captcha
 carrierwave
+cms
 coffeescript
 compass
 couchbase
@@ -34,6 +35,7 @@ javascript
 jenkins
 jquery
 js
+markdown
 minitest
 mongo
 mongodb
@@ -46,6 +48,7 @@ nosql
 oauth
 ogc
 paperclip
+postgres
 postresql
 pry
 rack
@@ -55,6 +58,7 @@ raspberry
 redis
 resque
 restful
+riak
 rpc
 rspec
 ruby
@@ -63,4 +67,5 @@ scss
 selenium
 sidekiq
 sinatra
+sqlite
 twitter
