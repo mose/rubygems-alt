@@ -10,9 +10,11 @@ bootstrap
 capistrano
 captcha
 carrierwave
+chef
 cms
 coffeescript
 compass
+cookbook
 couchbase
 css
 csv
@@ -68,4 +70,5 @@ selenium
 sidekiq
 sinatra
 sqlite
+thor
 twitter
