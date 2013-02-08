@@ -31,7 +31,15 @@ Daemonized
 
 The rubygems-announce process will be launched in the background, and you can find its logs in logs/rubygems-announce.output
 
-Check out
+
+Testing
+-----------------
+
+Tests use [MiniTest::Spec](https://github.com/seattlerb/minitest), to launch tests:
+
+    rake
+
+Running Check out
 -----------------
 
 [@rubygemsalt](https://twitter.com/RubyGemsAlt) on twitter
@@ -42,7 +50,7 @@ Licence
 
 (The MIT License)
 
-Copyright (c) Mose, at mose.fr
+Copyright (c) 2012-2013 - Mose, at mose.fr
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

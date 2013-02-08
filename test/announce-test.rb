@@ -20,7 +20,7 @@ describe Announce do
 
   end
 
-  describe "hamdles a short announce" do
+  describe "handles a short announce" do
 
     before do
       @tw = Minitest::Mock.new

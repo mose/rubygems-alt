@@ -1,3 +1,5 @@
+require 'minitest/ci'
+
 module TestHelpers
 
   def self.load_env
@@ -14,3 +16,5 @@ if $0 == __FILE__
   TestHelpers::load_env
   puts ENV.inspect
 end
+
+MiniTest::Ci.auto_clean = false

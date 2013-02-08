@@ -11,3 +11,5 @@ gem "daemons"
 gem "minitest"
 gem "rr"
 gem 'awesome_print'
+gem "rake"
+gem "minitest-ci"

@@ -8,9 +8,12 @@ lib/bundler/man
 pkg
 rdoc
 spec/reports
+test/reports
 test/tmp
 test/version_tmp
 tmp
+*.sublime-workspace
+*.sublime-project
 
 # YARD artifacts
 .yardoc
