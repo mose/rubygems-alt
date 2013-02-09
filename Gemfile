@@ -9,7 +9,8 @@ gem "daemons"
 
 # testing
 gem "minitest"
-gem "rr"
 gem 'awesome_print'
 gem "rake"
 gem "minitest-ci"
+gem "pry"
+gem "simplecov"

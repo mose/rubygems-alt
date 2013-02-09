@@ -24,3 +24,4 @@ tmp/*.pid
 tmp/last
 logs/*.output
 logs/*.log
+coverage

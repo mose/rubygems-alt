@@ -1,9 +1,11 @@
 require 'minitest/ci'
+require 'simplecov'
+SimpleCov.start
 
 module TestHelpers
 
   def self.load_env
-    File.open(File.expand_path('../../config',__FILE__), 'r') do |f|
+    File.open(File.expand_path('../../config.defaults',__FILE__), 'r') do |f|
       while line = f.gets
         line.gsub(/^\s*export\s+([^= ]*)\s*=['"]?([^'"\n]*)['"]?$/) { |l| ENV[$1] = $2 }
       end

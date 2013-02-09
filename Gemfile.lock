@@ -6,6 +6,7 @@ GEM
       crack (>= 0.1.4)
       httparty (>= 0.7.6)
       oauth2 (>= 0.5.0, < 0.9)
+    coderay (1.0.8)
     crack (0.3.2)
     daemons (1.1.9)
     eventmachine (1.0.0)
@@ -18,6 +19,7 @@ GEM
     httpauth (0.2.0)
     jwt (0.1.5)
       multi_json (>= 1.0)
+    method_source (0.8.1)
     minitest (4.6.0)
     minitest-ci (2.4.0)
       minitest (>= 3.0, < 5.0)
@@ -30,10 +32,18 @@ GEM
       jwt (~> 0.1.4)
       multi_json (~> 1.0)
       rack (~> 1.2)
+    pry (0.9.11.4)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
     rack (1.5.2)
     rake (10.0.3)
-    rr (1.0.4)
     simple_oauth (0.2.0)
+    simplecov (0.7.1)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.7.1)
+    simplecov-html (0.7.1)
+    slop (3.4.3)
     twitter (4.5.0)
       faraday (~> 0.8, < 0.10)
       multi_json (~> 1.0)
@@ -51,7 +61,8 @@ DEPENDENCIES
   eventmachine_httpserver
   minitest
   minitest-ci
+  pry
   rake
-  rr
+  simplecov
   twitter
   yajl-ruby

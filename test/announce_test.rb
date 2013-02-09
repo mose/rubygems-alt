@@ -26,13 +26,27 @@ describe Announce do
       @tw = Minitest::Mock.new
       @bit = Minitest::Mock.new
       @url = Minitest::Mock.new
-      @bit.expect(:shorten,@url,["http://rubygems.org/gems/capistrano-node-deploy"])
-      @bit.expect(:shorten,@url,["http://github.com/loopj/capistrano-node-deploy"])
       @url.expect(:short_url,'http://j.mp/xxxxxx')
       @url.expect(:short_url,'http://j.mp/yyyyyy')
+      @bit.expect(:shorten,@url,["http://rubygems.org/gems/capistrano-node-deploy"])
+      @bit.expect(:shorten,@url,["http://github.com/loopj/capistrano-node-deploy"])
       @announce = Announce.new(@tw,@bit)
-      @headers = {'Authorization' => '3a52d88183e7695d58aa110e0b8c06a18ee98ba050568c6d89648a3a779a4283' }
+      @a = Announce.new
+      @headers = {'Authorization' => 'ffa00c92415a1de2229c660b04b84221e54860307a392ab5d92ad5ae942f277a' }
       @content = File.read(File.expand_path("../samples/webhook",__FILE__))
+    end
+
+    it "uses twitter library" do
+      @a.twitter.class.name.must_equal "Twitter::Client"
+    end
+
+    it "uses bitly library" do
+      @a.bitly.class.name.must_equal "Bitly::V3::Client"
+    end
+
+    it "shortens urls" do
+      short = @announce.shorten "http://rubygems.org/gems/capistrano-node-deploy"
+      short.must_equal 'http://j.mp/xxxxxx'
     end
 
     it "read the announce correctly" do
@@ -44,7 +58,7 @@ describe Announce do
     end
 
     it "fails to accept invalid authorization key" do
-      @headers = {'Authorization' => '3a52d88183e7695d58aa110e0b8c06a18ee98ba050568c6d89648a3a779a4211' }
+      @headers = {'Authorization' => 'ffa00c92415a1de2229c660b04b84221e54860307a392ab5d92ad5ae942f277a' }
       @result = @announce.build_message(@content,@headers)
       @announce.build_message(@content,@headers).must_equal false
     end

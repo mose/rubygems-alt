@@ -65,7 +65,7 @@ class Announce
     version = payload['version']
     authorization = Digest::SHA2.hexdigest(name + version + ENV['WEBHOOK_APIKEY'])
     if headers['Authorization'] != authorization
-      #puts "unauthorized #{headers['Authorization']} != #{authorization}"
+      puts "unauthorized #{headers['Authorization']} != #{authorization}"
       return false
     else
       info = payload['info'].gsub(/\s+/,' ').gsub(/\A\s*/,'')
