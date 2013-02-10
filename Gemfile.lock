@@ -43,6 +43,8 @@ GEM
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
     simplecov-html (0.7.1)
+    simplecov-rcov (0.2.3)
+      simplecov (>= 0.4.1)
     slop (3.4.3)
     twitter (4.5.0)
       faraday (~> 0.8, < 0.10)
@@ -64,5 +66,6 @@ DEPENDENCIES
   pry
   rake
   simplecov
+  simplecov-rcov
   twitter
   yajl-ruby
